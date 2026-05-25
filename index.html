@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile - Sarus</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#0d0d0d;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    /* ================= BACKGROUND ================= */
+    body::before{
+      content:'';
+      position:fixed;
+      width:100%;
+      height:100%;
+      background:
+      linear-gradient(120deg, rgba(255,60,0,.12), transparent),
+      linear-gradient(-120deg, rgba(0,102,255,.12), transparent),
+      url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1920&auto=format&fit=crop') center/cover;
+      z-index:-3;
+      filter:brightness(.18);
+    }
+
+    body::after{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:
+      repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 50px
+      );
+      z-index:-2;
+    }
+
+    .paint{
+      position:fixed;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      z-index:-1;
+    }
+
+    .paint span{
+      position:absolute;
+      border-radius:40px;
+      opacity:.7;
+      filter:blur(1px);
+      animation:float 8s infinite alternate ease-in-out;
+    }
+
+    .paint span:nth-child(1){
+      width:250px;
+      height:25px;
+      background:#ff4d00;
+      top:12%;
+      left:-5%;
+      transform:rotate(25deg);
+    }
+
+    .paint span:nth-child(2){
+      width:200px;
+      height:20px;
+      background:#0059ff;
+      bottom:20%;
+      right:-3%;
+      transform:rotate(-30deg);
+    }
+
+    .paint span:nth-child(3){
+      width:140px;
+      height:18px;
+      background:#ffffff;
+      top:70%;
+      left:10%;
+      transform:rotate(40deg);
+    }
+
+    .paint span:nth-child(4){
+      width:190px;
+      height:18px;
+      background:#ff0000;
+      top:35%;
+      right:10%;
+      transform:rotate(-15deg);
+    }
+
+    @keyframes float{
+      from{ transform:translateY(0) rotate(10deg);}
+      to{ transform:translateY(-15px) rotate(-10deg);}
+    }
+
+    /* ================= HERO ================= */
+    .hero{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:40px 8%;
+      position:relative;
+    }
+
+    .hero-content{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:center;
+      width:100%;
+      max-width:1300px;
+    }
+
+    .left h3{
+      color:#ff4d00;
+      font-size:1.2rem;
+      letter-spacing:3px;
+      margin-bottom:10px;
+    }
+
+    .left h1{
+      font-size:5rem;
+      line-height:1;
+      font-weight:900;
+      text-transform:uppercase;
+      margin-bottom:20px;
+      background:linear-gradient(to right,#fff,#ff4d00,#0059ff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .left p{
+      color:#cfcfcf;
+      line-height:1.8;
+      margin-bottom:30px;
+      max-width:600px;
+    }
+
+    .btn-group{
+      display:flex;
+      gap:15px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:14px 26px;
+      border:none;
+      border-radius:50px;
+      font-weight:600;
+      cursor:pointer;
+      text-decoration:none;
+      transition:.3s;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#ff4d00,#ff0000);
+      color:white;
+      box-shadow:0 0 20px rgba(255,77,0,.5);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-5px);
+    }
+
+    .btn-outline{
+      border:2px solid #0059ff;
+      color:white;
+      background:transparent;
+    }
+
+    .btn-outline:hover{
+      background:#0059ff;
+    }
+
+    /* ================= PLAYER CARD ================= */
+    .card{
+      position:relative;
+      width:100%;
+      max-width:420px;
+      margin:auto;
+      border-radius:35px;
+      overflow:hidden;
+      background:rgba(255,255,255,.05);
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:0 0 30px rgba(0,0,0,.6);
+    }
+
+    .card-top{
+      height:160px;
+      background:
+      linear-gradient(135deg,#ff4d00,#0059ff);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card-top::before{
+      content:'';
+      position:absolute;
+      width:250px;
+      height:250px;
+      border-radius:50%;
+      background:rgba(255,255,255,.15);
+      top:-80px;
+      right:-80px;
+    }
+
+    .profile-img{
+      width:170px;
+      height:170px;
+      border-radius:50%;
+      border:6px solid #111;
+      object-fit:cover;
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top:70px;
+      box-shadow:0 0 20px rgba(0,0,0,.5);
+    }
+
+    .card-body{
+      padding:120px 30px 35px;
+      text-align:center;
+    }
+
+    .card-body h2{
+      font-size:2rem;
+      margin-bottom:5px;
+    }
+
+    .nickname{
+      color:#ff4d00;
+      margin-bottom:20px;
+      font-weight:600;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:15px;
+      margin-top:25px;
+    }
+
+    .stat{
+      background:rgba(255,255,255,.06);
+      padding:15px;
+      border-radius:18px;
+      transition:.3s;
+    }
+
+    .stat:hover{
+      transform:translateY(-5px);
+      background:rgba(255,255,255,.12);
+    }
+
+    .stat i{
+      font-size:1.5rem;
+      margin-bottom:10px;
+      color:#ff4d00;
+    }
+
+    .stat h4{
+      font-size:.95rem;
+      color:#ccc;
+    }
+
+    .stat p{
+      font-size:.9rem;
+      margin-top:5px;
+    }
+
+    /* ================= SECTION ================= */
+    section{
+      padding:90px 8%;
+    }
+
+    .section-title{
+      font-size:3rem;
+      margin-bottom:50px;
+      text-transform:uppercase;
+      font-weight:900;
+      text-align:center;
+      background:linear-gradient(to right,#fff,#ff4d00,#0059ff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+    }
+
+    .box{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:25px;
+      padding:30px;
+      backdrop-filter:blur(8px);
+      transition:.4s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .box::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg,rgba(255,77,0,.12),rgba(0,89,255,.12));
+      opacity:0;
+      transition:.4s;
+    }
+
+    .box:hover::before{
+      opacity:1;
+    }
+
+    .box:hover{
+      transform:translateY(-10px);
+      border-color:#ff4d00;
+    }
+
+    .box i{
+      font-size:2rem;
+      margin-bottom:20px;
+      color:#ff4d00;
+    }
+
+    .box h3{
+      margin-bottom:15px;
+      font-size:1.4rem;
+    }
+
+    .box p{
+      color:#ddd;
+      line-height:1.7;
+    }
+
+    /* ================= TIMELINE ================= */
+    .timeline{
+      position:relative;
+      max-width:900px;
+      margin:auto;
+    }
+
+    .timeline::before{
+      content:'';
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      width:4px;
+      height:100%;
+      background:linear-gradient(#ff4d00,#0059ff);
+    }
+
+    .timeline-item{
+      width:50%;
+      padding:20px 40px;
+      position:relative;
+    }
+
+    .timeline-item::before{
+      content:'';
+      position:absolute;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:#ff4d00;
+      top:30px;
+      right:-10px;
+      box-shadow:0 0 15px #ff4d00;
+    }
+
+    .timeline-item:nth-child(even){
+      left:50%;
+    }
+
+    .timeline-item:nth-child(even)::before{
+      left:-10px;
+    }
+
+    .timeline-content{
+      background:rgba(255,255,255,.05);
+      padding:25px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(8px);
+    }
+
+    footer{
+      text-align:center;
+      padding:30px;
+      color:#999;
+      border-top:1px solid rgba(255,255,255,.08);
+      margin-top:50px;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media(max-width:1000px){
+      .hero-content{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+
+      .left p{
+        margin:auto auto 30px;
+      }
+
+      .btn-group{
+        justify-content:center;
+      }
+
+      .left h1{
+        font-size:3.8rem;
+      }
+    }
+
+    @media(max-width:768px){
+      .timeline::before{
+        left:20px;
+      }
+
+      .timeline-item{
+        width:100%;
+        padding-left:60px;
+        padding-right:20px;
+      }
+
+      .timeline-item:nth-child(even){
+        left:0;
+      }
+
+      .timeline-item::before,
+      .timeline-item:nth-child(even)::before{
+        left:10px;
+      }
+
+      .left h1{
+        font-size:2.8rem;
+      }
+
+      .section-title{
+        font-size:2.2rem;
+      }
+    }
+
+    @media(max-width:500px){
+      .card{
+        max-width:100%;
+      }
+
+      .stats{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Decorative Paint -->
+  <div class="paint">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+
+      <div class="left">
+        <h3>PERSONAL PROFILE</h3>
+        <h1>Sarus</h1>
+
+        <p>
+          Seorang pemuda dengan semangat kompetitif tinggi, menyukai dunia olahraga dan tantangan.
+          Terinspirasi dari atmosfer sepak bola modern dengan desain sporty, energik, dan penuh warna.
+        </p>
+
+        <div class="btn-group">
+          <a href="#about" class="btn btn-primary">
+            <i class="fa-solid fa-user"></i> Tentang Saya
+          </a>
+
+          <a href="#skill" class="btn btn-outline">
+            <i class="fa-solid fa-fire"></i> Keahlian
+          </a>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card">
+          <div class="card-top"></div>
+
+          <img
+            src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=800&auto=format&fit=crop"
+            class="profile-img"
+          />
+
+          <div class="card-body">
+            <h2>Cornelius I Putu Surya Kurniawan</h2>
+            <div class="nickname">"Sarus"</div>
+
+            <p>
+              Badung, 16 September 2005
+            </p>
+
+            <div class="stats">
+              <div class="stat">
+                <i class="fa-solid fa-futbol"></i>
+                <h4>Olahraga</h4>
+                <p>Futsal & Bola</p>
+              </div>
+
+              <div class="stat">
+                <i class="fa-solid fa-calculator"></i>
+                <h4>Akademik</h4>
+                <p>Berhitung</p>
+              </div>
+
+              <div class="stat">
+                <i class="fa-solid fa-fire-flame-curved"></i>
+                <h4>Skill</h4>
+                <p>Nyampur Arak</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2 class="section-title">Tentang Saya</h2>
+
+    <div class="grid">
+
+      <div class="box">
+        <i class="fa-solid fa-location-dot"></i>
+        <h3>Tempat Lahir</h3>
+        <p>
+          Lahir di Badung pada 16 September 2005.
+        </p>
+      </div>
+
+      <div class="box">
+        <i class="fa-solid fa-brain"></i>
+        <h3>Hobi Akademik</h3>
+        <p>
+          Menyukai aktivitas berhitung dan logika matematika.
+        </p>
+      </div>
+
+      <div class="box">
+        <i class="fa-solid fa-volleyball"></i>
+        <h3>Hobi Non Akademik</h3>
+        <p>
+          Futsal, sepak bola, dan volley menjadi aktivitas favorit untuk menjaga semangat kompetitif.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section>
+    <h2 class="section-title">Riwayat Pendidikan</h2>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>SD No 2 Abianbase</h3>
+          <p>Pendidikan dasar.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>SMP Negeri 2 Mengwi</h3>
+          <p>Masa perkembangan akademik dan olahraga.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>SMAS Katolik Thomas Aquino</h3>
+          <p>Fokus membangun karakter dan pengalaman.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILL -->
+  <section id="skill">
+    <h2 class="section-title">Keahlian</h2>
+
+    <div class="grid">
+
+      <div class="box">
+        <i class="fa-solid fa-wine-bottle"></i>
+        <h3>Nyampur Arak</h3>
+        <p>
+          Memiliki pengalaman dalam mencampur arak.
+        </p>
+      </div>
+
+      <div class="box">
+        <i class="fa-solid fa-briefcase"></i>
+        <h3>Riwayat Kerja</h3>
+        <p>
+          Pernah bekerja dalam bidang dagang arak.
+        </p>
+      </div>
+
+      <div class="box">
+        <i class="fa-solid fa-bolt"></i>
+        <h3>Karakter</h3>
+        <p>
+          Aktif, kompetitif, dan menyukai tantangan baru.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Sarus Personal Profile — Designed with Football Vibes ⚽
+  </footer>
+
+</body>
+</html>
